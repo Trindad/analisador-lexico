@@ -1,0 +1,20 @@
+:: comentario
+:: mais comentario
+main begin
+	int x = 1
+	float y = 2.5
+	string nome = "Bruce Lee"
+	
+	if x < 3 begin
+		print "x = {x}"
+		scan x
+	end
+
+	while x > 10 begin
+
+	end
+
+	for i in 1...x begin
+
+	end
+end
