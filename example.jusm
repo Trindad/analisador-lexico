@@ -6,7 +6,7 @@ main begin
 	string nome = "Bruce Lee"
 	
 	if x < 3 begin
-		print "x = {x}"
+		print<<" "<<nome
 		scan x
 	end
 

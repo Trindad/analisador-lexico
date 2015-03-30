@@ -39,6 +39,9 @@ $minus = "^-$";
 $div = "^\/$";
 $mult = "^*$";
 $splat = "^...$";
+$or = "^||$";
+$and = "^&&$";
+$comment = "^::$";
 
 /**
  * Palavras reservadas
@@ -54,3 +57,16 @@ $scan = "^scan$";
 $while = "while";
 $if = "if";
 $for = "for";
+$ll = "^<<$";
+
+/**
+* 
+*/
+class Rule
+{
+	public $regex;
+	public $goToTable;	//se for para a tabela
+	public $code; 		//código identificador
+}
+
+$file = fopen($argv[1],'r');
