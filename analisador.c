@@ -203,13 +203,19 @@ void encheBuffer(Buffer *buffer)
 		return;
 	}
 
-	char c;
+	char c,ant;
 	int n = 0, i;
+
 	char buf[BUFFER_SIZE+1];
 
 	while (n < BUFFER_SIZE) {
 		
 		fread(&c, sizeof(char), 1, buffer->arquivo);
+
+		if ( ( ant == ':' && c == ':' ) || ant == ':' && c != '\n')
+		{
+			continue;
+		}
 
 		if (feof(buffer->arquivo) != 0) 
 		{
@@ -217,8 +223,13 @@ void encheBuffer(Buffer *buffer)
 			break;
 		}
 
-		buf[n] = c;
-		n++;
+		if (c != ':')
+		{
+			buf[n] = c;
+			n++;
+		}
+
+		ant = c;
 	}
 
 	buf[n] = '\0';

@@ -3,7 +3,7 @@
 main begin
 	int x = 1
 	float y = 2.5
-	string nome = "Bruce Lee"
+	string nome = "Bruce Lee" :: uytuytu
 	
 	if x < 3 begin
 		print<<" "<<nome
