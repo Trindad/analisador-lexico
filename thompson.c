@@ -41,6 +41,8 @@ re2post(char *re)
 	natom = 0;
 	if(strlen(re) >= sizeof buf/2)
 		return NULL;
+
+	char anterior;
 	for(; *re; re++){
 		switch(*re){
 		case '(':
@@ -80,10 +82,15 @@ re2post(char *re)
 		case '*':
 		case '+':
 		case '?':
-			if(natom == 0)
-				return NULL;
+			if (anterior != '\\') {
+				if(natom == 0)
+					return NULL;
+				*dst++ = *re;
+				break;
+			}
+		case '\\':
 			*dst++ = *re;
-			break;
+			re++;
 		default:
 			if(natom > 1){
 				--natom;
@@ -93,6 +100,8 @@ re2post(char *re)
 			natom++;
 			break;
 		}
+
+		anterior = *re;
 	}
 	if(p != paren)
 		return NULL;
@@ -117,7 +126,6 @@ enum
 };
 
 State matchstate = { Match };	/* matching state */
-int nstate;
 
 /* Allocate and initialize State */
 State*
@@ -172,6 +180,10 @@ Ptrlist*
 append(Ptrlist *l1, Ptrlist *l2)
 {
 	Ptrlist *oldl1;
+
+	if (!l1) {
+		return l1;
+	}
 	
 	oldl1 = l1;
 	while(l1->next)
@@ -199,19 +211,23 @@ post2nfa(char *postfix)
 	#define push(s) *stackp++ = s
 	#define pop() *--stackp
 
+	char anterior;
+
 	stackp = stack;
 	for(p=postfix; *p; p++){
 		switch(*p){
-		default:
-			s = state(*p, NULL, NULL);
-			push(frag(s, list1(&s->out)));
-			break;
 		case '.':	/* catenate */
-			e2 = pop();
-			e1 = pop();
-			patch(e1.out, e2.start);
-			push(frag(e1.start, e2.out));
-			break;
+			if (anterior != '\\') {
+				e2 = pop();
+				e1 = pop();
+				patch(e1.out, e2.start);
+				push(frag(e1.start, e2.out));
+				break;
+			} else {
+				s = state(*p, NULL, NULL);
+				push(frag(s, list1(&s->out1)));
+				break;
+			}
 		case '|':	/* alternate */
 			e2 = pop();
 			e1 = pop();
@@ -219,23 +235,49 @@ post2nfa(char *postfix)
 			push(frag(s, append(e1.out, e2.out)));
 			break;
 		case '?':	/* zero or one */
-			e = pop();
-			s = state(Split, e.start, NULL);
-			push(frag(s, append(e.out, list1(&s->out1))));
-			break;
+			if (anterior != '\\') {
+				e = pop();
+				s = state(Split, e.start, NULL);
+				push(frag(s, append(e.out, list1(&s->out1))));
+				break;
+			} else {
+				s = state(*p, NULL, NULL);
+				push(frag(s, list1(&s->out1)));
+				break;
+			}
 		case '*':	/* zero or more */
-			e = pop();
-			s = state(Split, e.start, NULL);
-			patch(e.out, s);
-			push(frag(s, list1(&s->out1)));
-			break;
+			if (anterior != '\\') {
+				e = pop();
+				s = state(Split, e.start, NULL);
+				patch(e.out, s);
+				push(frag(s, list1(&s->out1)));
+				break;
+			} else {
+				s = state(*p, NULL, NULL);
+				push(frag(s, list1(&s->out1)));
+				break;
+			}
 		case '+':	/* one or more */
-			e = pop();
-			s = state(Split, e.start, NULL);
-			patch(e.out, s);
-			push(frag(e.start, list1(&s->out1)));
+			if (anterior != '\\') {
+				e = pop();
+				s = state(Split, e.start, NULL);
+				patch(e.out, s);
+				push(frag(e.start, list1(&s->out1)));
+				break;
+			} else {
+				s = state(*p, NULL, NULL);
+				push(frag(s, list1(&s->out1)));
+				break;
+			}
+		case '\\':
+			p++;
+		default:
+			s = state(*p, NULL, NULL);
+			push(frag(s, list1(&s->out)));
 			break;
 		}
+
+		anterior = *p;
 	}
 
 	e = pop();
@@ -383,21 +425,21 @@ startnfa(State *start, List *l)
 }
 
 DState*
-startdstate(State *start)
+startdstate(State *start, List *l1)
 {
-	return dstate(startlist(start, &l1));
+	return dstate(startlist(start, l1));
 }
 
 DState*
-nextstate(DState *d, int c)
+nextstate(DState *d, int c, List *l1)
 {
-	step(&d->l, c, &l1);
-	return d->next[c] = dstate(&l1);
+	step(&d->l, c, l1);
+	return d->next[c] = dstate(l1);
 }
 
 /* Run DFA to determine whether it matches s. */
 int
-match(DState *start, char *s)
+match(DState *start, char *s, List *l1)
 {
 	DState *d, *next;
 	int c, i;
@@ -406,7 +448,7 @@ match(DState *start, char *s)
 	for(; *s; s++){
 		c = *s & 0xFF;
 		if((next = d->next[c]) == NULL)
-			next = nextstate(d, c);
+			next = nextstate(d, c, l1);
 		d = next;
 	}
 	return ismatch(&d->l);

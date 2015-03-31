@@ -26,14 +26,20 @@ int main(int argc, char **argv)
 		}
 
 		expressoes[i].maquina = start;
+		expressoes[i].l1.s = malloc(nstate*sizeof expressoes[i].l1.s[0]);
+	}
+
+	if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
+		printf("%s\n", "mauriciocinelli+2@gmail.com");
+	}
+
+	if(match(startdstate(expressoes[31].maquina, &expressoes[31].l1), "<<", &(expressoes[31].l1))) {
+		printf("%s\n", "<<");
+	}
+
+	if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
+		printf("%s\n", "mauriciocinelli+2@gmail.com");
 	}
 	
-	
-	
-	// l1.s = malloc(nstate*sizeof l1.s[0]);
-	// l2.s = malloc(nstate*sizeof l2.s[0]);
-	// for(i=2; i<argc; i++)
-	// 	if(match(startdstate(start), argv[i]))
-	// 		printf("%s\n", argv[i]);
 	return 0;
 }

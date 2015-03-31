@@ -11,7 +11,7 @@ Expressao *criaExpressoes()
 	}
 
 
-	exp[0].expressao = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|_)(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|_])*";//identificador
+	exp[0].expressao = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|_)(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|_)*";//identificador
 	exp[0].tsimbolo = 1;
 	exp[0].id = 1;
 
@@ -20,7 +20,7 @@ Expressao *criaExpressoes()
 	exp[1].id = 2;
 
 
-	exp[2].expressao = "\"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|+|?|*|<|>|:|;|/|\\|-|')*\"";//string 
+	exp[2].expressao = "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|\\+|\\?|\\*|<|>|:|;|/|\\|-|'|\\.)*";//string 
 	exp[2].tsimbolo = 0;
 	exp[2].id = 3;
 
@@ -44,7 +44,7 @@ Expressao *criaExpressoes()
 	exp[6].tsimbolo = 0;
 	exp[6].id = 7;
 
-	exp[7].expressao = "+";//operador de soma
+	exp[7].expressao = "\\+";//operador de soma
 	exp[7].tsimbolo = 0;
 	exp[7].id = 8;
 
@@ -53,7 +53,7 @@ Expressao *criaExpressoes()
 	exp[8].tsimbolo = 0;
 	exp[8].id = 9;
 
-	exp[9].expressao = "*";//operador de multiplicação
+	exp[9].expressao = "\\*";//operador de multiplicação
 	exp[9].tsimbolo = 0;
 	exp[9].id = 10;
 
@@ -78,7 +78,7 @@ Expressao *criaExpressoes()
 	exp[14].tsimbolo = 0;
 	exp[14].id = 15;
 
-	exp[15].expressao = "...";//iterador de laço
+	exp[15].expressao = "to";//iterador de laço
 	exp[15].tsimbolo = 0;
 	exp[15].id = 16;
 
@@ -203,7 +203,7 @@ void encheBuffer(Buffer *buffer)
 		return;
 	}
 
-	char c,ant;
+	char c,ant = '\0';
 	int n = 0, i;
 
 	char buf[BUFFER_SIZE+1];
@@ -212,7 +212,7 @@ void encheBuffer(Buffer *buffer)
 		
 		fread(&c, sizeof(char), 1, buffer->arquivo);
 
-		if ( ( ant == ':' && c == ':' ) || ant == ':' && c != '\n')
+		if ( ( ant == ':' && c == ':' ) || (ant == ':' && c != '\n'))
 		{
 			continue;
 		}
@@ -249,7 +249,7 @@ void encheBuffer(Buffer *buffer)
  */
 char proximoCaractere(Buffer *buffer)
 {
-	char c;
+	char c = '\0';
 
 	if (buffer->atual == 1) {
 		c = buffer->buffer1[buffer->posBuffer];

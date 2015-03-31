@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N 50 //armazena o número de expressões
+#define N 32 //armazena o número de expressões
 #define BUFFER_SIZE 8
 
 typedef struct _exp
@@ -12,6 +12,7 @@ typedef struct _exp
 	int tsimbolo; 
 	int id;
 	State *maquina;
+	List l1;
 }Expressao;
 
 typedef struct _bff

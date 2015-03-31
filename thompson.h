@@ -70,6 +70,8 @@ state(int c, State *out, State *out1);
 Frag
 frag(State *start, Ptrlist *out);
 
+int nstate;
+
 Ptrlist*
 list1(State **outp);
 void
@@ -97,11 +99,11 @@ dstate(List *l);
 void
 startnfa(State *start, List *l);
 DState*
-startdstate(State *start);
+startdstate(State *start, List *l1);
 
 DState*
-nextstate(DState *d, int c);
+nextstate(DState *d, int c, List *l1);
 int
-match(DState *start, char *s);
+match(DState *start, char *s, List *l1);
 
 #endif

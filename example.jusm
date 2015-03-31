@@ -14,7 +14,7 @@ main begin
 
 	end
 
-	for i in 1...x begin
+	for i in 1 to x begin
 
 	end
 end
