@@ -1,6 +1,3 @@
-#ifndef THOMPSON_H
-#define THOMPSON_H
-
 /*
  * Regular expression implementation.
  * Supports only ( | ) * + ?.  No escapes.
@@ -20,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "thompson.h"
 
 /*
  * Convert infix regexp re to postfix notation.
@@ -36,6 +34,8 @@ re2post(char *re)
 		int nalt;
 		int natom;
 	} paren[100], *p;
+
+	
 	
 	p = paren;
 	dst = buf;
@@ -117,14 +117,7 @@ enum
 	Match = 256,
 	Split = 257
 };
-typedef struct State State;
-struct State
-{
-	int c;
-	State *out;
-	State *out1;
-	int lastlist;
-};
+
 State matchstate = { Match };	/* matching state */
 int nstate;
 
@@ -143,20 +136,6 @@ state(int c, State *out, State *out1)
 	return s;
 }
 
-/*
- * A partially built NFA without the matching state filled in.
- * Frag.start points at the start state.
- * Frag.out is a list of places that need to be set to the
- * next state for this fragment.
- */
-typedef struct Frag Frag;
-typedef union Ptrlist Ptrlist;
-struct Frag
-{
-	State *start;
-	Ptrlist *out;
-};
-
 /* Initialize Frag struct. */
 Frag
 frag(State *start, Ptrlist *out)
@@ -165,16 +144,7 @@ frag(State *start, Ptrlist *out)
 	return n;
 }
 
-/*
- * Since the out pointers in the list are always 
- * uninitialized, we use the pointers themselves
- * as storage for the Ptrlists.
- */
-union Ptrlist
-{
-	Ptrlist *next;
-	State *s;
-};
+
 
 /* Create singleton list containing just outp. */
 Ptrlist*
@@ -280,14 +250,7 @@ post2nfa(char *postfix)
 #undef push
 }
 
-typedef struct List List;
-struct List
-{
-	State **s;
-	int n;
-};
-List l1, l2;
-static int listid;
+
 
 void addstate(List*, State*);
 void step(List*, int, List*);
@@ -350,17 +313,7 @@ step(List *clist, int c, List *nlist)
 	}
 }
 
-/*
- * Represents a DFA state: a cached NFA state list.
- */
-typedef struct DState DState;
-struct DState
-{
-	List l;
-	DState *next[256];
-	DState *left;
-	DState *right;
-};
+
 
 /* Compare lists: first by length, then by members. */
 static int
@@ -484,5 +437,3 @@ match(DState *start, char *s)
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-#endif

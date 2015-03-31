@@ -1,3 +1,4 @@
+#include "thompson.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,6 +11,7 @@ typedef struct _exp
 	char *expressao;
 	int tsimbolo; 
 	int id;
+	State *maquina;
 }Expressao;
 
 typedef struct _bff
