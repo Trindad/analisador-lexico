@@ -77,9 +77,9 @@ re2post(char *re)
 			natom = p->natom;
 			natom++;
 			break;
-		case '~': // *
-		case '^': // +
-		case '&': // ?
+		case '*':
+		case '+':
+		case '?':
 			if(natom == 0)
 				return NULL;
 			*dst++ = *re;
@@ -160,9 +160,6 @@ void
 patch(Ptrlist *l, State *s)
 {
 	Ptrlist *next;
-	if (!l) {
-		return;
-	}
 	
 	for(; l; l=next){
 		next = l->next;
@@ -221,18 +218,18 @@ post2nfa(char *postfix)
 			s = state(Split, e1.start, e2.start);
 			push(frag(s, append(e1.out, e2.out)));
 			break;
-		case '&':	/* zero or one */
+		case '?':	/* zero or one */
 			e = pop();
 			s = state(Split, e.start, NULL);
 			push(frag(s, append(e.out, list1(&s->out1))));
 			break;
-		case '~':	/* zero or more */
+		case '*':	/* zero or more */
 			e = pop();
 			s = state(Split, e.start, NULL);
 			patch(e.out, s);
 			push(frag(s, list1(&s->out1)));
 			break;
-		case '^':	/* one or more */
+		case '+':	/* one or more */
 			e = pop();
 			s = state(Split, e.start, NULL);
 			patch(e.out, s);
