@@ -40,6 +40,94 @@ int main(int argc, char **argv)
 	if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
 		printf("%s\n", "mauriciocinelli+2@gmail.com");
 	}
+
+	/**
+	 * Roda máquinas 
+	 * Descarta as máquinas que são inválidas
+	 */
+	int cont = 0,k = 0,reconheceu = 0;
+
+	char *buff = (char*) malloc (sizeof(char) * MAX);
+	Token *tokens = (Token*) malloc (sizeof(Token) * MAX);//tabela de tokens
+
+	if (buff == NULL ||  tokens == NULL) {
+		exit(1);
+	}
+
+	char c = proximoCaractere(buffer);
+
+	int prioridadeant = MAX;
+	int maquina = 0;
+
+	while(c != EOF) {
+		
+		buff[cont] = c;
+
+		
+		for (k = 0; k < N; k++)
+		{
+			DState *start = startdstate(expressoes[k].maquina, &expressoes[k].l1);
+			List *l1 = &(expressoes[k].l1);
+
+			DState *d, *next;
+			int j = 0, i = 0, w = 0;
+			
+			d = start;
+
+			for(w = 0; w < cont; w++) {
+
+				j = buff[w] & 0xFF;
+
+				if((next = d->next[j]) == NULL) {
+					next = nextstate(d, j, l1);
+				}
+
+				d = next;
+			}
+
+			if (ismatch(&d->l))
+			{
+				printf("reconheceu %s token \n",buff);
+
+				if (expressoes[k].prioridade <  prioridadeant)
+				{
+					prioridadeant = expressoes[k].prioridade;
+
+					maquina = k;
+				}
+			}
+			else
+			{
+				// printf("não reconheceu %s token \n",buff);
+
+				reconheceu++;
+			}
+		}
+
+		//insere na tabela de tokens 
+		if (reconheceu == N && cont >= 1 && prioridadeant != MAX)
+		{
+			printf("buff %s maq %d rec %d prio %d \n",buff,maquina,reconheceu,prioridadeant );
+			char s = buff[cont];
+
+			buff[cont] = '\0';
+
+			memset(buff,'\0',cont);
+
+			buff[0] = s;
+
+			cont++;
+			prioridadeant = MAX;
+		}
+
+		c = proximoCaractere(buffer);
+
+		cont++;
+		reconheceu = 0;
+
+	}
+
+	printf("%s\n", buff);
 	
 	return 0;
 }

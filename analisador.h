@@ -5,10 +5,13 @@
 
 #define N 32 //armazena o número de expressões
 #define BUFFER_SIZE 8
+#define MAX 8000
 
 typedef struct _exp
 {
 	char *expressao;
+	int tipo;
+	int prioridade;
 	int tsimbolo; 
 	int id;
 	State *maquina;
@@ -26,6 +29,24 @@ typedef struct _bff
 	int terminou;
 	FILE *arquivo;
 } Buffer;
+
+
+typedef struct _tk
+{
+	char *str;
+	int tipo;
+	int cod;
+	int linha;
+	int coluna;
+}Token;
+
+typedef struct _ts
+{
+	int cod;
+	char *nome;
+	int tipo;
+
+}Tabela;
 
 FILE *abreArquivoFonte(char *filename);
 Buffer *criaBuffer(FILE *arquivo);
