@@ -6,7 +6,7 @@ main begin
 	string nome = "BruceLee" ::vsxggxsv
 
 	if x < 3 begin
-		print<<" "<<nome
+		print " " nome
 		scan x
 	end
 

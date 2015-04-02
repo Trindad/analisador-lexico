@@ -132,6 +132,11 @@ int main(int argc, char **argv)
 
 			prioridadeant = MAX;
 			maquina = 0;
+
+		/*	if (c == '\n' || c == ' ' || c == '\t')
+			{
+				cont--;
+			}*/
 		}
 		else
 		{
@@ -140,7 +145,7 @@ int main(int argc, char **argv)
 			// printf("-%c %d %c\n", c, cont,cAnt);
 			cont++;
 
-			if (c == '\n' || c == ' ' || c == '\t')
+			if ( (c == '\n' || c == ' ' || c == '\t') && cont == 0)
 			{
 				cont--;
 			}
