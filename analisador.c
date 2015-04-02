@@ -222,9 +222,9 @@ Expressao *criaExpressoes()
 	exp[30].prioridade = 1;
 	exp[30].id = 31;
 
-	exp[31].expressao = "<<";//recebe
+	exp[31].expressao = "in";
 	exp[31].tsimbolo = 0;
-	exp[31].tipo = 2;
+	exp[31].tipo = 4;
 	exp[31].prioridade = 1;
 	exp[31].id = 32;
 
@@ -360,4 +360,38 @@ char proximoCaractere(Buffer *buffer)
 	// printf("%c pos %d",c,buffer->posBuffer);
 	
 	return c;
+}
+
+int encontraSimbolo(Simbolo *tabela, char *nome)
+{
+	int indice = -1, i;
+	for (i = 0; i < MAX; i++) {
+		if (!tabela[i].nome) {
+			continue;
+		}
+
+		if (strcmp(tabela[i].nome, nome) == 0) {
+			indice = i;
+			break;
+		}
+	}
+
+	return indice;
+}
+
+int encontraToken(Token *tabela, char *token)
+{
+	int indice = -1, i;
+	for (i = 0; i < MAX; i++) {
+		if (!tabela[i].str) {
+			continue;
+		}
+
+		if (strcmp(tabela[i].str, token) == 0) {
+			indice = i;
+			break;
+		}
+	}
+
+	return indice;
 }

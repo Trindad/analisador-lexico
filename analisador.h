@@ -35,6 +35,7 @@ typedef struct _tk
 {
 	char *str;
 	int tipo;
+	int id; // referencia tabela de simbolo
 	int cod;
 	int linha;
 	int coluna;
@@ -46,7 +47,7 @@ typedef struct _ts
 	char *nome;
 	int tipo;
 
-}Tabela;
+}Simbolo;
 
 FILE *abreArquivoFonte(char *filename);
 Buffer *criaBuffer(FILE *arquivo);
@@ -59,3 +60,7 @@ void encheBuffer(Buffer *buffer);
  * Retorna próximo caractere válido do buffer ou EOF
  */
 char proximoCaractere(Buffer *buffer);
+
+int encontraSimbolo(Simbolo *tabela, char *nome);
+
+int encontraToken(Token *tabela, char *token);

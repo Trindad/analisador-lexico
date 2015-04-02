@@ -7,7 +7,12 @@ int main(int argc, char **argv)
 	char *post;
 	State *start;
 
+	int ntokens = 0;
+	int nSimbolos = 0;
+
 	Expressao *expressoes = criaExpressoes();
+	Token tabela_tokens[MAX];
+	Simbolo tabela_simbolos[MAX];
 
 	FILE *arquivo = abreArquivoFonte("example.jusm");
 	Buffer *buffer = criaBuffer(arquivo);
@@ -37,13 +42,13 @@ int main(int argc, char **argv)
 	}
 
 
-	if(match(startdstate(expressoes[1].maquina, &expressoes[1].l1), "2,", &(expressoes[1].l1))) {
-		printf("%s\n", "2,");
-	}
-	else
-	{
-		printf("não reconheceu\n");
-	}
+	// if(match(startdstate(expressoes[1].maquina, &expressoes[1].l1), "2,", &(expressoes[1].l1))) {
+	// 	printf("%s\n", "2,");
+	// }
+	// else
+	// {
+	// 	printf("não reconheceu\n");
+	// }
 
 	/**
 	 * Roda máquinas 
@@ -126,6 +131,37 @@ int main(int argc, char **argv)
 		{
 			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant);
 
+			if (strlen(buff)) {
+				int id = -1;
+				// vai pra tabela de simbolo
+				if (expressoes[maquina].tsimbolo == 1) {
+					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
+					if (indiceSimbolo == -1) {
+						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 1));
+						strcpy(tabela_simbolos[nSimbolos].nome, buff);
+						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
+						tabela_simbolos[nSimbolos].tipo = 1;
+
+						id = nSimbolos;
+						indiceSimbolo = nSimbolos;
+						nSimbolos++;
+
+					} else {
+						id = indiceSimbolo;
+					}
+				}
+
+				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 1));
+				strcpy(tabela_tokens[ntokens].str, buff);
+				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
+				tabela_tokens[ntokens].id = id;
+				tabela_tokens[ntokens].cod = ntokens + 1;
+				// tabela_tokens[ntokens].linha
+				// tabela_tokens[ntokens].coluna
+				
+				ntokens++;
+			}
+
 			for (it = 0; it <= MAX; it++)
 			{
 				buff[it] = '\0';
@@ -146,6 +182,37 @@ int main(int argc, char **argv)
 		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) )
 		{
 			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont]);
+
+			if (strlen(buff)) {
+				int id = -1;
+				// vai pra tabela de simbolo
+				if (expressoes[maquina].tsimbolo == 1) {
+					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
+					if (indiceSimbolo == -1) {
+						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 1));
+						strcpy(tabela_simbolos[nSimbolos].nome, buff);
+						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
+						tabela_simbolos[nSimbolos].tipo = 1;
+
+						id = nSimbolos;
+						indiceSimbolo = nSimbolos;
+						nSimbolos++;
+
+					} else {
+						id = indiceSimbolo;
+					}
+				}
+
+				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 1));
+				strcpy(tabela_tokens[ntokens].str, buff);
+				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
+				tabela_tokens[ntokens].id = id;
+				tabela_tokens[ntokens].cod = ntokens + 1;
+				// tabela_tokens[ntokens].linha
+				// tabela_tokens[ntokens].coluna
+				
+				ntokens++;
+			}
 			
 			c = buff[cont];
 			
@@ -188,6 +255,16 @@ int main(int argc, char **argv)
 		}
 
 		reconheceu = 0;	
+	}
+
+	printf("TABELA DE SIMBOLOS\n");
+	for(i = 0; i < nSimbolos; i++) {
+		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+	}
+
+	printf("\n\n\nTABELA DE TOKENS\n");
+	for(i = 0; i < ntokens; i++) {
+		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
 	}
 
 	fclose(arquivo);
