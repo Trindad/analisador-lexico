@@ -61,7 +61,7 @@ int main(int argc, char **argv)
 
 	while(c != EOF) {
 		
-		printf("%c %d\n",c,cont );
+		// printf("%c %d\n",c,cont );
 		if (c != '\n' && c != ' ' && c != '\t' && cAnt != EOF) {
 		 	
 		 	buff[cont] = c;
