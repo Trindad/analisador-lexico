@@ -135,10 +135,17 @@ state(int c, State *out, State *out1)
 	
 	nstate++;
 	s = malloc(sizeof *s);
+
+	if (s == NULL)
+	{
+		exit(1);
+	}
+
 	s->lastlist = 0;
 	s->c = c;
 	s->out = out;
 	s->out1 = out1;
+
 	return s;
 }
 
@@ -279,7 +286,7 @@ post2nfa(char *postfix)
 
 		anterior = *p;
 	}
-
+	
 	e = pop();
 	if(stackp != stack)
 		return NULL;

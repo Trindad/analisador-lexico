@@ -2,7 +2,7 @@
 :: mais comentario
 main begin
 	int x = 1
-	float y = 2.5
+	float y = 2,5
 	string nome = "BruceLee" ::vsxggxsv
 
 	if x < 3 begin
