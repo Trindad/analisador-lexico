@@ -39,7 +39,7 @@ Expressao *criaExpressoes()
 	exp[1].id = 2;
 
 
-	exp[2].expressao = "\"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|\\+|\\?|\\*|<|>|:|;|/|\\|-|'|\\.)\"*";//string 
+	exp[2].expressao = "\"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|\\+|\\?|\\*|<|>|:|;|/|\\|-|'|\\.)*\"";//string 
 	exp[2].tsimbolo = 0;
 	exp[2].tipo = 3;
 	exp[2].prioridade = 3;
@@ -248,7 +248,7 @@ Buffer *criaBuffer(FILE *arquivo)
 {
 	Buffer *buf = (Buffer *) malloc(sizeof(Buffer));
 
-	if (!buf) {
+	if (!buf || !arquivo) {
 		printf("Sem memória disponível\n");
 		exit(EXIT_FAILURE);
 	}
@@ -268,7 +268,6 @@ Buffer *criaBuffer(FILE *arquivo)
 
 void encheBuffer(Buffer *buffer)
 {
-
 	if ( feof(buffer->arquivo) )
 	{
 		if (buffer->atual == 1)
@@ -282,27 +281,32 @@ void encheBuffer(Buffer *buffer)
 		return;
 	}
 
-	char c,ant = '\0';
-	int n = 0, i;
+	char c = '\0',ant = '\0';
+	int n = 0;
 
 	char buf[BUFFER_SIZE+1];
 
 	while (n < BUFFER_SIZE) {
 		
-		fread(&c, sizeof(char), 1, buffer->arquivo);
+		fread(&c, sizeof(char),1, buffer->arquivo);
+		
+		if (c == EOF)
+		{
+			break;
+		}
+		// printf("%c",c);
 
-		if ( ( ant == ':' && c == ':' ) || (ant == ':' && c != '\n'))
+		if ( ( ant == ':' && c == ':' ) || ( ant == ':' && c != '\n' ))
 		{
 			continue;
 		}
-
-		if (feof(buffer->arquivo) != 0) 
+		if (feof(buffer->arquivo)) 
 		{
 			buffer->fimArquivo = 1;
 			break;
 		}
 
-		if (c != ':' && c != '\n')
+		if (c != ':')
 		{
 			buf[n] = c;
 			n++;
@@ -312,7 +316,7 @@ void encheBuffer(Buffer *buffer)
 	}
 
 	buf[n] = '\0';
-
+	
 	if (buffer->atual == 1)
 	{
 		strcpy(buffer->buffer2, buf);
@@ -328,16 +332,6 @@ void encheBuffer(Buffer *buffer)
  */
 char proximoCaractere(Buffer *buffer)
 {
-	char c = '\0';
-
-	if (buffer->atual == 1) {
-		c = buffer->buffer1[buffer->posBuffer];
-	} else {
-		c = buffer->buffer2[buffer->posBuffer];
-	}
-
-	buffer->posBuffer++;
-
 	if (buffer->posBuffer >= BUFFER_SIZE) {
 
 		buffer->atual = buffer->atual == 1 ? 2 : 1;
@@ -352,6 +346,18 @@ char proximoCaractere(Buffer *buffer)
 		buffer->posBuffer = 0;
 		encheBuffer(buffer);
 	}
+	
+	char c = '\0';
 
+	if (buffer->atual == 1) {
+		c = buffer->buffer1[buffer->posBuffer];
+	} else {
+		c = buffer->buffer2[buffer->posBuffer];
+	}
+
+
+	buffer->posBuffer++;
+	// printf("%c pos %d",c,buffer->posBuffer);
+	
 	return c;
 }

@@ -29,17 +29,17 @@ int main(int argc, char **argv)
 		expressoes[i].l1.s = malloc(nstate*sizeof expressoes[i].l1.s[0]);
 	}
 
-	if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
-		printf("%s\n", "mauriciocinelli+2@gmail.com");
-	}
+	// if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
+	// 	printf("%s\n", "mauriciocinelli+2@gmail.com");
+	// }
 
-	if(match(startdstate(expressoes[31].maquina, &expressoes[31].l1), "<<", &(expressoes[31].l1))) {
-		printf("%s\n", "<<");
-	}
+	// if(match(startdstate(expressoes[31].maquina, &expressoes[31].l1), "<<", &(expressoes[31].l1))) {
+	// 	printf("%s\n", "<<");
+	// }
 
-	if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
-		printf("%s\n", "mauriciocinelli+2@gmail.com");
-	}
+	// if(match(startdstate(expressoes[2].maquina, &expressoes[2].l1), "mauriciocinelli+2@gmail.com", &(expressoes[2].l1))) {
+	// 	printf("%s\n", "mauriciocinelli+2@gmail.com");
+	// }
 
 	/**
 	 * Roda máquinas 
@@ -47,23 +47,26 @@ int main(int argc, char **argv)
 	 */
 	int cont = 0,k = 0,reconheceu = 0;
 
-	char *buff = (char*) malloc (sizeof(char) * MAX);
-	Token *tokens = (Token*) malloc (sizeof(Token) * MAX);//tabela de tokens
+	char *buff = (char*) malloc (sizeof(char) * MAX+1);
+	Token *tokens = (Token*) malloc (sizeof(Token) * MAX+1);//tabela de tokens
 
 	if (buff == NULL ||  tokens == NULL) {
 		exit(1);
 	}
 
-	char c = proximoCaractere(buffer);
+	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
 	int maquina = 0;
 
 	while(c != EOF) {
 		
-		buff[cont] = c;
+		printf("%c %d\n",c,cont );
+		if (c != '\n' && c != ' ' && c != '\t' && cAnt != EOF) {
+		 	
+		 	buff[cont] = c;
+		}
 
-		
 		for (k = 0; k < N; k++)
 		{
 			DState *start = startdstate(expressoes[k].maquina, &expressoes[k].l1);
@@ -73,7 +76,6 @@ int main(int argc, char **argv)
 			int j = 0, i = 0, w = 0;
 			
 			d = start;
-
 			for(w = 0; w < cont; w++) {
 
 				j = buff[w] & 0xFF;
@@ -87,8 +89,7 @@ int main(int argc, char **argv)
 
 			if (ismatch(&d->l))
 			{
-				printf("reconheceu %s token \n",buff);
-
+				// printf("\nreconheceu '%s' token %d %d %d\n",buff, k, prioridadeant,expressoes[k].prioridade);
 				if (expressoes[k].prioridade <  prioridadeant)
 				{
 					prioridadeant = expressoes[k].prioridade;
@@ -98,36 +99,67 @@ int main(int argc, char **argv)
 			}
 			else
 			{
-				// printf("não reconheceu %s token \n",buff);
-
 				reconheceu++;
 			}
 		}
 
-		//insere na tabela de tokens 
-		if (reconheceu == N && cont >= 1 && prioridadeant != MAX)
+		if ( cont >= 1 && (c == ' ' || c == '\n' || c == '\t') && ( buff[0] != ' ' || buff[0] == '\n' || buff[0] == '\t')  )
 		{
-			printf("buff %s maq %d rec %d prio %d \n",buff,maquina,reconheceu,prioridadeant );
-			char s = buff[cont];
+			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant );
 
-			buff[cont] = '\0';
-
-			memset(buff,'\0',cont);
-
-			buff[0] = s;
-
-			cont++;
+			memset(buff,'\0',MAX);//reset no buffer
+			
+			cont = 0;
 			prioridadeant = MAX;
+			maquina = 0;
+
+			c = proximoCaractere(buffer);
+			
+			if (c == '\n' || c == ' ' || c == '\t')
+			{
+				cont--;
+			}
+		}
+		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX))
+		{
+			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant );
+			
+			c = buff[cont];
+
+			memset(buff,'\0',MAX);//reset no buffer
+
+			cont = 0;
+
+			prioridadeant = MAX;
+			maquina = 0;
+		}
+		else
+		{
+			c = proximoCaractere(buffer);
+			
+			// printf("-%c %d %c\n", c, cont,cAnt);
+			cont++;
+		}
+		
+		if (cAnt == EOF)
+		{
+			break;
 		}
 
-		c = proximoCaractere(buffer);
+		if (c == EOF && cont >= 1)
+		{
+			cAnt = c;
+			c = '\n';
+			cont++;
+			buff[cont] = '\0';
+			cont--;
+			// printf("serio %d '%s' %c %c\n",cont,buff,c,cAnt);
+		}
 
-		cont++;
-		reconheceu = 0;
-
+		reconheceu = 0;	
 	}
-
-	printf("%s\n", buff);
 	
+	fclose(arquivo);
+
 	return 0;
 }

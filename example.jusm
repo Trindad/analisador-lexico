@@ -3,8 +3,8 @@
 main begin
 	int x = 1
 	float y = 2.5
-	string nome = "Bruce Lee" :: uytuytu
-	
+	string nome = "BruceLee" ::vsxggxsv
+
 	if x < 3 begin
 		print<<" "<<nome
 		scan x
