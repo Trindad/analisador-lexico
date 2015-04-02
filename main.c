@@ -63,6 +63,13 @@ int main(int argc, char **argv)
 		exit(1);
 	}
 
+	int it = 0;
+
+	for (it = 0; it <= MAX; it++)
+	{
+		buff[it] = '\0';
+	}
+
 	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
@@ -70,7 +77,7 @@ int main(int argc, char **argv)
 
 	while(c != EOF) {
 		
-		printf("'%s' %c %d\n",buff,c,cont );
+		// printf("'%s' %c %d\n",buff,c,cont );
 		if (c != '\n' && c != ' ' && c != '\t' && cAnt != EOF && cont >= 0) {
 		 	
 		 	buff[cont] = c;
@@ -100,7 +107,7 @@ int main(int argc, char **argv)
 
 				if (ismatch(&d->l))
 				{
-					printf("\nreconheceu '%s' token %d %d %d\n",buff, k, prioridadeant,expressoes[k].prioridade);
+					// printf("\nreconheceu '%s' token %d %d %d\n",buff, k, prioridadeant,expressoes[k].prioridade);
 					if (expressoes[k].prioridade <  prioridadeant)
 					{
 						prioridadeant = expressoes[k].prioridade;
@@ -119,7 +126,10 @@ int main(int argc, char **argv)
 		{
 			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant);
 
-			memset(buff,'\0',MAX);//reset no buffer
+			for (it = 0; it <= MAX; it++)
+			{
+				buff[it] = '\0';
+			}
 			
 			cont = 0;
 			prioridadeant = MAX;
@@ -127,29 +137,27 @@ int main(int argc, char **argv)
 
 			c = proximoCaractere(buffer);
 			
-			if (c == '\n' || c == ' ' || c == '\t')
+			if (c == '\n' || c == ' ' || c == '\t' || c == EOF)
 			{
+				// printf("cont %d\n",cont);
 				cont--;
 			}
 		}
 		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) )
 		{
-			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant);
+			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont]);
 			
 			c = buff[cont];
-
-
-			memset(buff,'\0',MAX);//reset no buffer
+			
+			for (it = 0; it <= MAX; it++)
+			{
+				buff[it] = '\0';
+			}
 
 			cont = 0;
 
 			prioridadeant = MAX;
 			maquina = 0;
-
-		/*	if (c == '\n' || c == ' ' || c == '\t')
-			{
-				cont--;
-			}*/
 		}
 		else
 		{
@@ -158,7 +166,7 @@ int main(int argc, char **argv)
 			// printf("-%c %d %c\n", c, cont,cAnt);
 			cont++;
 
-			if ( (c == '\n' || c == ' ' || c == '\t') && cont == 0)
+			if ( (c == '\n' || c == ' ' || c == '\t') && cont == 0 || c == EOF)
 			{
 				cont--;
 			}
@@ -171,7 +179,7 @@ int main(int argc, char **argv)
 
 		if (c == EOF && cont >= 1)
 		{
-			printf("serio %d '%s' %c %c\n",cont,buff,c,cAnt);
+			// printf("serio %d '%s' %c %c\n",cont,buff,c,cAnt);
 			cAnt = c;
 			c = '\n';
 			cont++;
