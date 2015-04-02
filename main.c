@@ -139,6 +139,11 @@ int main(int argc, char **argv)
 			
 			// printf("-%c %d %c\n", c, cont,cAnt);
 			cont++;
+
+			if (c == '\n' || c == ' ' || c == '\t')
+			{
+				cont--;
+			}
 		}
 		
 		if (cAnt == EOF)
