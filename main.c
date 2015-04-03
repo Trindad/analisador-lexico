@@ -11,8 +11,19 @@ int main(int argc, char **argv)
 	int nSimbolos = 0;
 
 	Expressao *expressoes = criaExpressoes();
+
+	if (expressoes == NULL)
+	{
+		exit(1);
+	}
+
 	Token tabela_tokens[MAX];
 	Simbolo tabela_simbolos[MAX];
+
+	for (i = 0; i < MAX; i++) {
+		tabela_simbolos[i].nome = NULL;
+		tabela_tokens[i].str = NULL;
+	}
 
 	FILE *arquivo = abreArquivoFonte("example.jusm");
 	Buffer *buffer = criaBuffer(arquivo);
@@ -62,11 +73,6 @@ int main(int argc, char **argv)
 	{
 		exit(1);
 	}
-	Token *tokens = (Token*) malloc (sizeof(Token) * MAX+1);//tabela de tokens
-
-	if (tokens == NULL) {
-		exit(1);
-	}
 
 	int it = 0;
 
@@ -82,17 +88,17 @@ int main(int argc, char **argv)
 
 	while(c != EOF) {
 		
-		printf("'%s' %c %d\n",buff,c,cont );
+		// printf("'%s' %c %d\n",buff,c,cont );
 		if (c == '\"')
 		{
 			asp++;
 		}
 
-		//tratamento de erro léxico
-		// if (asp == 1 && c == '\n' )
-		// {
-		// 	panico(1,linha,buff);
-		// }
+		// tratamento de erro léxico
+		if (asp == 1 && c == '\n' )
+		{
+			panico(1,linha,buff);
+		}
 
 		if (c != '\n' && (c == ' ' && asp >= 1) && c != '\t' && cAnt != EOF && cont >= 0) {
 		 	
@@ -153,6 +159,13 @@ int main(int argc, char **argv)
 					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
 					if (indiceSimbolo == -1) {
 						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 1));
+
+						if (tabela_simbolos[nSimbolos].nome == NULL	)
+						{
+							printf("Erro na alocação de memória.\n");
+							exit(1);
+						}
+
 						strcpy(tabela_simbolos[nSimbolos].nome, buff);
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
 						tabela_simbolos[nSimbolos].tipo = 1;
@@ -277,22 +290,24 @@ int main(int argc, char **argv)
 	printf("TABELA DE SIMBOLOS\n");
 	for(i = 0; i < nSimbolos; i++) {
 		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+		free(tabela_simbolos[i].nome);
 	}
 
 	printf("\n\n\nTABELA DE TOKENS\n");
 	for(i = 0; i < ntokens; i++) {
 		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
+		free(tabela_tokens[i].str);
 	}
 
 	fclose(arquivo);
 	free(buff);
 	free(buffer);
-	free(tokens);
 
 	for (i = 0; i < N; i++)
 	{
 		free(expressoes[i].l1.s);
 	}
+	
 	free(expressoes);
 
 	return 0;

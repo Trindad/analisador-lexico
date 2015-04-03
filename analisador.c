@@ -366,7 +366,7 @@ int encontraSimbolo(Simbolo *tabela, char *nome)
 {
 	int indice = -1, i;
 	for (i = 0; i < MAX; i++) {
-		if (!tabela[i].nome) {
+		if (tabela[i].nome == NULL) {
 			continue;
 		}
 
@@ -420,6 +420,6 @@ void panico(int erro,int linha,char *str)
 		case 6:
 			break;
 	}
-	
+
 	return;
 }
