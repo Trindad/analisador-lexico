@@ -39,7 +39,7 @@ Expressao *criaExpressoes()
 	exp[1].id = 2;
 
 
-	exp[2].expressao = "\"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|\\+|\\?|\\*|<|>|:|;|/|\\|-|'|\\.)*\"";//string 
+	exp[2].expressao = "\"(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|x|w|y|z|A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z|0|1|2|3|4|5|6|7|8|9|@|#|$|_|{|}|[|]|%|\\+|\\?|\\*|<|>|:|;|/|\\|-|'|\\.|\\s)*\"";//string 
 	exp[2].tsimbolo = 0;
 	exp[2].tipo = 3;
 	exp[2].prioridade = 3;
@@ -394,4 +394,32 @@ int encontraToken(Token *tabela, char *token)
 	}
 
 	return indice;
+}
+
+//entra com codigo de erro léxico, a linha onde o erro ocorreu e o erro 
+//erro = 1 para string
+//erro = 2 simbolos não pertencentes a um conjunto
+//erro = 3 identificador mal formado
+//erro = 4 número mal formado
+//erro = 5 tamanho do identificador
+//erro = 6 tamanho excessivo do número
+void panico(int erro,int linha,char *str)
+{
+	switch(erro)
+	{
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+
+		case 6:
+			break;
+	}
+	
+	return;
 }

@@ -78,12 +78,27 @@ int main(int argc, char **argv)
 	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
-	int maquina = 0;
+	int maquina = 0,asp = 0,linha;
 
 	while(c != EOF) {
 		
-		// printf("'%s' %c %d\n",buff,c,cont );
-		if (c != '\n' && c != ' ' && c != '\t' && cAnt != EOF && cont >= 0) {
+		printf("'%s' %c %d\n",buff,c,cont );
+		if (c == '\"')
+		{
+			asp++;
+		}
+
+		//tratamento de erro léxico
+		// if (asp == 1 && c == '\n' )
+		// {
+		// 	panico(1,linha,buff);
+		// }
+
+		if (c != '\n' && (c == ' ' && asp >= 1) && c != '\t' && cAnt != EOF && cont >= 0) {
+		 	
+		 	buff[cont] = c;
+		}
+		else if (c != '\n' && c != ' ' && c != '\t' && cAnt != EOF && cont >= 0) {
 		 	
 		 	buff[cont] = c;
 		}
@@ -127,9 +142,9 @@ int main(int argc, char **argv)
 			}
 		}
 
-		if ( cont >= 1 && (c == ' ' || c == '\n' || c == '\t') && ( buff[0] != ' ' || buff[0] == '\n' || buff[0] != '\t')  )
+		if ( cont >= 1 && (c == ' ' || c == '\n' || c == '\t') && ( buff[0] != ' ' || buff[0] == '\n' || buff[0] != '\t')  && ( asp == 0 || asp == 2 ) )
 		{
-			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d\n",buff,maquina,reconheceu,prioridadeant);
+			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d %d\n",buff,maquina,reconheceu,prioridadeant,asp);
 
 			if (strlen(buff)) {
 				int id = -1;
@@ -170,6 +185,7 @@ int main(int argc, char **argv)
 			cont = 0;
 			prioridadeant = MAX;
 			maquina = 0;
+			asp = 0;
 
 			c = proximoCaractere(buffer);
 			
@@ -179,9 +195,9 @@ int main(int argc, char **argv)
 				cont--;
 			}
 		}
-		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) )
+		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) && ( asp == 0 || asp == 2) )
 		{
-			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont]);
+			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c %d\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont],asp);
 
 			if (strlen(buff)) {
 				int id = -1;
@@ -225,6 +241,7 @@ int main(int argc, char **argv)
 
 			prioridadeant = MAX;
 			maquina = 0;
+			asp = 0;
 		}
 		else
 		{

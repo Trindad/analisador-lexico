@@ -3,7 +3,7 @@
 main begin
 	int x = 1
 	float y = 2,5
-	string nome = "BruceLee" ::vsxggxsv
+	string nome = "Bruce Lee" ::vsxggxsv
 
 	if x < 3 begin
 		print " " nome

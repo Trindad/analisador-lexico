@@ -221,7 +221,9 @@ post2nfa(char *postfix)
 	char anterior;
 
 	stackp = stack;
-	for(p=postfix; *p; p++){
+	int controle = 0;
+
+	for(p = postfix; *p; p++){
 		switch(*p){
 		case '.':	/* catenate */
 			if (anterior != '\\') {
@@ -277,8 +279,16 @@ post2nfa(char *postfix)
 				break;
 			}
 		case '\\':
+			controle = 1;
 			p++;
 		default:
+
+			if (*p == 's' && controle == 1)
+			{
+				*p = ' ';
+				controle = 0;
+			}
+
 			s = state(*p, NULL, NULL);
 			push(frag(s, list1(&s->out)));
 			break;
@@ -355,6 +365,7 @@ step(List *clist, int c, List *nlist)
 	nlist->n = 0;
 	for(i=0; i<clist->n; i++){
 		s = clist->s[i];
+		// printf(" aqui '%c' '%c'\n",s->c, c);
 		if(s->c == c)
 			addstate(nlist, s->out);
 	}
