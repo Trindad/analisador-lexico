@@ -32,7 +32,7 @@ Expressao *criaExpressoes()
 	exp[0].prioridade = 2;
 	exp[0].id = 1;
 
-	exp[1].expressao = "(0|1|2|3|4|5|6|7|8|9)+(,(0|1|2|3|4|5|6|7|8|9)+)?"; //números
+	exp[1].expressao = "(0|1|2|3|4|5|6|7|8|9)+"; //números inteiros
 	exp[1].tsimbolo = 0;
 	exp[1].tipo = 3;
 	exp[1].prioridade = 3;
@@ -228,6 +228,12 @@ Expressao *criaExpressoes()
 	exp[31].prioridade = 1;
 	exp[31].id = 32;
 
+	exp[32].expressao = "(0|1|2|3|4|5|6|7|8|9)+(,(0|1|2|3|4|5|6|7|8|9)*)";
+	exp[32].tsimbolo = 0;
+	exp[32].tipo = 4;
+	exp[32].prioridade = 1;
+	exp[32].id = 33;
+
 	return exp;
 }
 
@@ -397,27 +403,19 @@ int encontraToken(Token *tabela, char *token)
 }
 
 //entra com codigo de erro léxico, a linha onde o erro ocorreu e o erro 
-//erro = 1 para string
-//erro = 2 simbolos não pertencentes a um conjunto
-//erro = 3 identificador mal formado
+//erro = 1 para string ok
+//erro = 2 simbolos não pertencentes ao conjunto ok 
+//erro = 3 identificador mal formado ok
 //erro = 4 número mal formado
-//erro = 5 tamanho do identificador
-//erro = 6 tamanho excessivo do número
 void panico(int erro,int linha,char *str)
 {
 	switch(erro)
 	{
 		case 1:
+			fprintf(stderr, "String \"%s\" não terminada na linha %d\n", str, linha);
 			break;
 		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			break;
-		case 5:
-
-		case 6:
+			fprintf(stderr, "Token \"%s\" não esperado na linha %d\n", str, linha);
 			break;
 	}
 

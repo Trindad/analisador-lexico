@@ -1,13 +1,16 @@
+######3nn
 :: comentario
 :: mais comentario
 main begin
 	int x = 1
 	float y = 2,5
 	string nome = "Bruce Lee" ::vsxggxsv
-
+	$$$$$vdacsgcxcvf
+	float yup&$ = 1
 	if x < 3 begin
 		print " " nome
 		scan x
+		x = 2,@
 	end
 
 	while x > 10 begin

@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
-	int maquina = 0,asp = 0,linha;
+	int maquina = -1,asp = 0,linha = 0;
 
 	while(c != EOF) {
 		
@@ -92,6 +92,10 @@ int main(int argc, char **argv)
 		if (c == '\"')
 		{
 			asp++;
+		}
+
+		if (c == '\n') {
+			linha++;
 		}
 
 		// tratamento de erro léxico
@@ -120,7 +124,8 @@ int main(int argc, char **argv)
 				int j = 0, i = 0, w = 0;
 				
 				d = start;
-				for(w = 0; w < cont; w++) {
+				int length = strlen(buff);
+				for(w = 0; w < length; w++) {
 
 					j = buff[w] & 0xFF;
 
@@ -150,7 +155,29 @@ int main(int argc, char **argv)
 
 		if ( cont >= 1 && (c == ' ' || c == '\n' || c == '\t') && ( buff[0] != ' ' || buff[0] == '\n' || buff[0] != '\t')  && ( asp == 0 || asp == 2 ) )
 		{
-			printf("\ncaso 1 buff '%s' maq %d rec %d prio %d %d\n",buff,maquina,reconheceu,prioridadeant,asp);
+			if (maquina == -1) {
+				panico(2, linha, buff);
+
+				for (it = 0; it <= MAX; it++)
+				{
+					buff[it] = '\0';
+				}
+				
+				cont = 0;
+				prioridadeant = MAX;
+				maquina = -1;
+				asp = 0;
+
+				c = proximoCaractere(buffer);
+				
+				// if (c == '\n' || c == ' ' || c == '\t' || c == EOF)
+				// {
+				// 	// printf("cont %d\n",cont);
+				// 	cont--;
+				// }
+			}
+
+			// printf("\ncaso 1 buff '%s' maq %d rec %d prio %d %d\n",buff,maquina,reconheceu,prioridadeant,asp);
 
 			if (strlen(buff)) {
 				int id = -1;
@@ -197,7 +224,7 @@ int main(int argc, char **argv)
 			
 			cont = 0;
 			prioridadeant = MAX;
-			maquina = 0;
+			maquina = -1;
 			asp = 0;
 
 			c = proximoCaractere(buffer);
@@ -210,7 +237,7 @@ int main(int argc, char **argv)
 		}
 		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) && ( asp == 0 || asp == 2) )
 		{
-			printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c %d\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont],asp);
+			// printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c %d\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont],asp);
 
 			if (strlen(buff)) {
 				int id = -1;
@@ -218,8 +245,9 @@ int main(int argc, char **argv)
 				if (expressoes[maquina].tsimbolo == 1) {
 					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
 					if (indiceSimbolo == -1) {
-						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 1));
-						strcpy(tabela_simbolos[nSimbolos].nome, buff);
+						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff)));
+						strncpy(tabela_simbolos[nSimbolos].nome, buff, cont);
+						tabela_simbolos[nSimbolos].nome[cont] = '\0';
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
 						tabela_simbolos[nSimbolos].tipo = 1;
 
@@ -232,8 +260,9 @@ int main(int argc, char **argv)
 					}
 				}
 
-				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 1));
-				strcpy(tabela_tokens[ntokens].str, buff);
+				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 2));
+				strncpy(tabela_tokens[ntokens].str, buff, cont);
+				tabela_tokens[ntokens].str[cont] = '\0';
 				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
@@ -253,7 +282,7 @@ int main(int argc, char **argv)
 			cont = 0;
 
 			prioridadeant = MAX;
-			maquina = 0;
+			maquina = -1;
 			asp = 0;
 		}
 		else
@@ -287,17 +316,17 @@ int main(int argc, char **argv)
 		reconheceu = 0;	
 	}
 
-	printf("TABELA DE SIMBOLOS\n");
-	for(i = 0; i < nSimbolos; i++) {
-		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
-		free(tabela_simbolos[i].nome);
-	}
+	// printf("TABELA DE SIMBOLOS\n");
+	// for(i = 0; i < nSimbolos; i++) {
+	// 	printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+	// 	free(tabela_simbolos[i].nome);
+	// }
 
-	printf("\n\n\nTABELA DE TOKENS\n");
-	for(i = 0; i < ntokens; i++) {
-		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
-		free(tabela_tokens[i].str);
-	}
+	// printf("\n\n\nTABELA DE TOKENS\n");
+	// for(i = 0; i < ntokens; i++) {
+	// 	printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
+	// 	free(tabela_tokens[i].str);
+	// }
 
 	fclose(arquivo);
 	free(buff);
