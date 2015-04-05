@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
-	int maquina = -1,asp = 0,linha = 0;
+	int maquina = -1,asp = 0,linha = 1,coluna = 0;
 
 	while(c != EOF) {
 		
@@ -96,8 +96,13 @@ int main(int argc, char **argv)
 
 		if (c == '\n') {
 			linha++;
+			coluna = 0;
 		}
-
+		else if (c != '\n')
+		{
+			coluna++;
+		}
+		printf("caractere %c coluna %d linha %d\n",c,coluna,linha );
 		// tratamento de erro léxico
 		if (asp == 1 && c == '\n' )
 		{
@@ -170,6 +175,7 @@ int main(int argc, char **argv)
 
 				c = proximoCaractere(buffer);
 				
+				continue;
 				// if (c == '\n' || c == ' ' || c == '\t' || c == EOF)
 				// {
 				// 	// printf("cont %d\n",cont);
@@ -300,7 +306,7 @@ int main(int argc, char **argv)
 					}
 				}
 
-				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 2));
+				tabela_tokens[ntokens].str = (char*) malloc(sizeof(char) * (strlen(buff) + 2));
 
 				if (tabela_tokens[ntokens].str == NULL)
 				{
@@ -361,17 +367,17 @@ int main(int argc, char **argv)
 		reconheceu = 0;	
 	}
 
-	printf("TABELA DE SIMBOLOS\n");
-	for(i = 0; i < nSimbolos; i++) {
-		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
-		free(tabela_simbolos[i].nome);
-	}
+	// printf("TABELA DE SIMBOLOS\n");
+	// for(i = 0; i < nSimbolos; i++) {
+	// 	printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+	// 	free(tabela_simbolos[i].nome);
+	// }
 
-	printf("\n\n\nTABELA DE TOKENS\n");
-	for(i = 0; i < ntokens; i++) {
-		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
-		free(tabela_tokens[i].str);
-	}
+	// printf("\n\n\nTABELA DE TOKENS\n");
+	// for(i = 0; i < ntokens; i++) {
+	// 	printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
+	// 	free(tabela_tokens[i].str);
+	// }
 
 	fclose(arquivo);
 	free(buff);

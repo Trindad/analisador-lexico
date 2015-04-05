@@ -404,8 +404,7 @@ int encontraToken(Token *tabela, char *token)
 //entra com codigo de erro léxico, a linha onde o erro ocorreu e o erro 
 //erro = 1 para string ok
 //erro = 2 simbolos não pertencentes ao conjunto ok 
-//erro = 3 identificador mal formado ok
-//erro = 4 número mal formado
+//erro = 3 variavel utilizada mas não declarada
 void panico(int erro,int linha,char *str)
 {
 	switch(erro)
