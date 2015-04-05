@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 		{
 			coluna++;
 		}
-		printf("caractere %c coluna %d linha %d\n",c,coluna,linha );
+		// printf("caractere %c coluna %d linha %d\n",c,coluna,linha );
 		// tratamento de erro léxico
 		if (asp == 1 && c == '\n' )
 		{
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 				if (expressoes[maquina].tsimbolo == 1) {
 					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
 					if (indiceSimbolo == -1) {
-						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 1));
+						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff) + 2));
 
 						if (tabela_simbolos[nSimbolos].nome == NULL	)
 						{
@@ -200,6 +200,7 @@ int main(int argc, char **argv)
 						}
 
 						strcpy(tabela_simbolos[nSimbolos].nome, buff);
+						tabela_simbolos[nSimbolos].nome[cont] = '\0';
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
 						tabela_simbolos[nSimbolos].categoria = 1;
 
@@ -217,6 +218,7 @@ int main(int argc, char **argv)
 						}
 						else
 						{
+							tabela_simbolos[nSimbolos].tipo = -1;
 							panico(3,linha,buff);
 						}
 
@@ -229,8 +231,9 @@ int main(int argc, char **argv)
 					}
 				}
 
-				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 1));
-				strcpy(tabela_tokens[ntokens].str, buff);
+				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 2));
+				strncpy(tabela_tokens[ntokens].str, buff, cont);
+				tabela_tokens[ntokens].str[cont] = '\0';
 				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
@@ -268,7 +271,7 @@ int main(int argc, char **argv)
 				if (expressoes[maquina].tsimbolo == 1) {
 					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
 					if (indiceSimbolo == -1) {
-						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff)));
+						tabela_simbolos[nSimbolos].nome = (char *)malloc(sizeof(char) * (strlen(buff)+2));
 
 						if (tabela_simbolos[nSimbolos].nome == NULL)
 						{
@@ -294,6 +297,7 @@ int main(int argc, char **argv)
 						}
 						else
 						{
+							tabela_simbolos[nSimbolos].tipo = -1;
 							panico(3,linha,buff);
 						}
 
@@ -367,17 +371,17 @@ int main(int argc, char **argv)
 		reconheceu = 0;	
 	}
 
-	// printf("TABELA DE SIMBOLOS\n");
-	// for(i = 0; i < nSimbolos; i++) {
-	// 	printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
-	// 	free(tabela_simbolos[i].nome);
-	// }
+	printf("TABELA DE SIMBOLOS\n");
+	for(i = 0; i < nSimbolos; i++) {
+		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+		free(tabela_simbolos[i].nome);
+	}
 
-	// printf("\n\n\nTABELA DE TOKENS\n");
-	// for(i = 0; i < ntokens; i++) {
-	// 	printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
-	// 	free(tabela_tokens[i].str);
-	// }
+	printf("\n\n\nTABELA DE TOKENS\n");
+	for(i = 0; i < ntokens; i++) {
+		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
+		free(tabela_tokens[i].str);
+	}
 
 	fclose(arquivo);
 	free(buff);

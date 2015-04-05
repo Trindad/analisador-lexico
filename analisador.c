@@ -324,10 +324,19 @@ void encheBuffer(Buffer *buffer)
 	
 	if (buffer->atual == 1)
 	{
+		int j = 0;
+		for (j = 0; j < BUFFER_SIZE; j++) {
+			buffer->buffer2[j] = '\0';
+		}
+
 		strcpy(buffer->buffer2, buf);
 	}
 	else
 	{
+		int j = 0;
+		for (j = 0; j < BUFFER_SIZE; j++) {
+			buffer->buffer1[j] = '\0';
+		}
 		strcpy(buffer->buffer1, buf);
 	}
 }
@@ -337,6 +346,18 @@ void encheBuffer(Buffer *buffer)
  */
 char proximoCaractere(Buffer *buffer)
 {
+	char c = '\0';
+
+	if (buffer->atual == 1) {
+		c = buffer->buffer1[buffer->posBuffer];
+	} else {
+		c = buffer->buffer2[buffer->posBuffer];
+	}
+
+
+	buffer->posBuffer++;
+	// printf("%c pos %d",c,buffer->posBuffer);
+	// 
 	if (buffer->posBuffer >= BUFFER_SIZE) {
 
 		buffer->atual = buffer->atual == 1 ? 2 : 1;
@@ -351,18 +372,6 @@ char proximoCaractere(Buffer *buffer)
 		buffer->posBuffer = 0;
 		encheBuffer(buffer);
 	}
-	
-	char c = '\0';
-
-	if (buffer->atual == 1) {
-		c = buffer->buffer1[buffer->posBuffer];
-	} else {
-		c = buffer->buffer2[buffer->posBuffer];
-	}
-
-
-	buffer->posBuffer++;
-	// printf("%c pos %d",c,buffer->posBuffer);
 	
 	return c;
 }
