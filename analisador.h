@@ -45,8 +45,8 @@ typedef struct _ts
 {
 	int cod;
 	char *nome;
-	int tipo;
-
+	int tipo;//string(1),int(2),float(3)
+	int categoria;//tipo 1 é variável
 }Simbolo;
 
 FILE *abreArquivoFonte(char *filename);

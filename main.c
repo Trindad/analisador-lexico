@@ -195,7 +195,24 @@ int main(int argc, char **argv)
 
 						strcpy(tabela_simbolos[nSimbolos].nome, buff);
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
-						tabela_simbolos[nSimbolos].tipo = 1;
+						tabela_simbolos[nSimbolos].categoria = 1;
+
+						if ( strcmp(tabela_tokens[ntokens-1].str,"string") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 1;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"int") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 2;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"float") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 3;
+						}
+						else
+						{
+							panico(3,linha,buff);
+						}
 
 						id = nSimbolos;
 						indiceSimbolo = nSimbolos;
@@ -211,7 +228,7 @@ int main(int argc, char **argv)
 				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
-				// tabela_tokens[ntokens].linha
+				tabela_tokens[ntokens].linha = linha;
 				// tabela_tokens[ntokens].coluna
 				
 				ntokens++;
@@ -246,10 +263,33 @@ int main(int argc, char **argv)
 					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
 					if (indiceSimbolo == -1) {
 						tabela_simbolos[nSimbolos].nome = malloc(sizeof(char) * (strlen(buff)));
+
+						if (tabela_simbolos[nSimbolos].nome == NULL)
+						{
+							exit(1);
+						}
+
 						strncpy(tabela_simbolos[nSimbolos].nome, buff, cont);
 						tabela_simbolos[nSimbolos].nome[cont] = '\0';
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
-						tabela_simbolos[nSimbolos].tipo = 1;
+						tabela_simbolos[nSimbolos].categoria = 1;
+
+						if ( strcmp(tabela_tokens[ntokens-1].str,"string") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 1;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"int") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 2;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"float") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 3;
+						}
+						else
+						{
+							panico(3,linha,buff);
+						}
 
 						id = nSimbolos;
 						indiceSimbolo = nSimbolos;
@@ -261,12 +301,17 @@ int main(int argc, char **argv)
 				}
 
 				tabela_tokens[ntokens].str = malloc(sizeof(char) * (strlen(buff) + 2));
+
+				if (tabela_tokens[ntokens].str == NULL)
+				{
+					exit(1);
+				}
 				strncpy(tabela_tokens[ntokens].str, buff, cont);
 				tabela_tokens[ntokens].str[cont] = '\0';
 				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
-				// tabela_tokens[ntokens].linha
+				tabela_tokens[ntokens].linha = linha;
 				// tabela_tokens[ntokens].coluna
 				
 				ntokens++;
@@ -316,17 +361,17 @@ int main(int argc, char **argv)
 		reconheceu = 0;	
 	}
 
-	// printf("TABELA DE SIMBOLOS\n");
-	// for(i = 0; i < nSimbolos; i++) {
-	// 	printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
-	// 	free(tabela_simbolos[i].nome);
-	// }
+	printf("TABELA DE SIMBOLOS\n");
+	for(i = 0; i < nSimbolos; i++) {
+		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
+		free(tabela_simbolos[i].nome);
+	}
 
-	// printf("\n\n\nTABELA DE TOKENS\n");
-	// for(i = 0; i < ntokens; i++) {
-	// 	printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
-	// 	free(tabela_tokens[i].str);
-	// }
+	printf("\n\n\nTABELA DE TOKENS\n");
+	for(i = 0; i < ntokens; i++) {
+		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
+		free(tabela_tokens[i].str);
+	}
 
 	fclose(arquivo);
 	free(buff);

@@ -22,7 +22,6 @@ Expressao *criaExpressoes()
 	 * Alta prioridade = 1
 	 * Média prioridade = 2
 	 * Baixa prioridade = 3
-	 * 
 	 */
 
 
@@ -416,6 +415,11 @@ void panico(int erro,int linha,char *str)
 			break;
 		case 2:
 			fprintf(stderr, "Token \"%s\" não esperado na linha %d\n", str, linha);
+			break;
+		case 3:
+			fprintf(stderr, "Variável \"%s\" não declarada e usada pela primeira vez na linha %d\n", str, linha);	
+			break;
+		default:
 			break;
 	}
 
