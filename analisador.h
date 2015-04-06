@@ -64,3 +64,6 @@ char proximoCaractere(Buffer *buffer);
 int encontraSimbolo(Simbolo *tabela, char *nome);
 
 int encontraToken(Token *tabela, char *token);
+
+void cria_arquivo_tabela_simbolos(Simbolo *tabela_simbolos, int nSimbolos);
+void cria_arquivo_tabela_tokens(Token *tabela_tokens, int ntokens);

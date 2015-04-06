@@ -21,6 +21,8 @@ main begin
   int __uid = 0
   int dusi_dusi_dios = 99
 
+  int nosei = !((((10 / 5) + 455 - 678678 * 2)%2) == 0)
+
   while (x > 10 and x <= 20) or (x > 50) begin
 
   end

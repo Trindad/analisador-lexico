@@ -445,3 +445,30 @@ void panico(int erro,int linha, int coluna, char *str)
 
 	return;
 }
+
+void cria_arquivo_tabela_simbolos(Simbolo *tabela_simbolos, int nSimbolos)
+{
+	FILE *file = fopen("tabela_simbolos.txt", "w+");
+	fprintf(file, "TABELA DE SIMBOLOS\n");
+	fprintf(file, "==================\n\n");
+
+	int i;
+	for(i = 0; i < nSimbolos; i++) {
+		const char *categoria = tabela_simbolos[i].categoria == 1 ? "variável" : "indefinido";
+		const char *tipo = tabela_simbolos[i].tipo == 1 ? "string" : (tabela_simbolos[i].tipo == 2 ? "int" : "float");
+		fprintf(file, "simbolo: %s, codigo: %d, categoria: %s, tipo: %s\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, categoria, tipo);
+	}
+}
+
+void cria_arquivo_tabela_tokens(Token *tabela_tokens, int ntokens)
+{
+	FILE *file = fopen("tabela_tokens.txt", "w+");
+	fprintf(file, "TABELA DE TOKENS\n");
+	fprintf(file, "==================\n\n");
+
+	int i;
+	for(i = 0; i < ntokens; i++) {
+		const char *tipo = tabela_tokens[i].tipo == 1 ? "identificador" : (tabela_tokens[i].tipo == 2 ? "operador" : (tabela_tokens[i].tipo == 3 ? "constante" : "palavra reservada"));
+		fprintf(file, "token: %s, codigo: %d, tipo: %s, linha: %d, coluna: %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tipo, tabela_tokens[i].linha, tabela_tokens[i].coluna);
+	}
+}

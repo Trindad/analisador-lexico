@@ -13,6 +13,7 @@ int main(int argc, char **argv)
 	int i;
 	char *post;
 	State *start;
+	int teveErros = 0;
 
 	int ntokens = 0;
 	int nSimbolos = 0;
@@ -115,6 +116,7 @@ int main(int argc, char **argv)
 		if (asp == 1 && c == '\n' )
 		{
 			panico(1,linha,coluna,buff);
+			teveErros = 1;
 		}
 
 		if (c != '\n' && (c == ' ' && asp >= 1) && c != '\t' && cAnt != EOF && cont >= 0) {
@@ -175,8 +177,10 @@ int main(int argc, char **argv)
 			if (maquina == -1 && strlen(buff) > 0) {
 				if (c == '\n') {
 					panico(2, linha - 1, colunaAnterior - cont, buff);
+					teveErros = 1;
 				} else {
 					panico(2, linha, coluna - cont - 1,buff);
+					teveErros = 1;
 				}
 
 				for (it = 0; it <= MAX; it++)
@@ -238,6 +242,7 @@ int main(int argc, char **argv)
 						{
 							tabela_simbolos[nSimbolos].tipo = -1;
 							panico(3,linha,coluna - cont,buff);
+							teveErros = 1;
 						}
 
 						id = nSimbolos;
@@ -255,8 +260,14 @@ int main(int argc, char **argv)
 				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
-				tabela_tokens[ntokens].linha = linha;
-				// tabela_tokens[ntokens].coluna
+
+				if (c == '\n') {
+					tabela_tokens[ntokens].linha = linha - 1;
+					tabela_tokens[ntokens].coluna = colunaAnterior - cont + 1;
+				} else {
+					tabela_tokens[ntokens].linha = linha;
+					tabela_tokens[ntokens].coluna = coluna - cont;
+				}
 				
 				ntokens++;
 			}
@@ -323,6 +334,7 @@ int main(int argc, char **argv)
 						{
 							tabela_simbolos[nSimbolos].tipo = -1;
 							panico(3,linha,coluna - cont,buff);
+							teveErros = 1;
 						}
 
 						id = nSimbolos;
@@ -346,7 +358,7 @@ int main(int argc, char **argv)
 				tabela_tokens[ntokens].id = id;
 				tabela_tokens[ntokens].cod = ntokens + 1;
 				tabela_tokens[ntokens].linha = linha;
-				// tabela_tokens[ntokens].coluna
+				tabela_tokens[ntokens].coluna = coluna - cont;
 				
 				ntokens++;
 			}
@@ -482,15 +494,15 @@ int main(int argc, char **argv)
 		reconheceu = 0;	
 	}
 
-	printf("TABELA DE SIMBOLOS\n");
+	cria_arquivo_tabela_simbolos(tabela_simbolos, nSimbolos);
+
 	for(i = 0; i < nSimbolos; i++) {
-		printf("nome %s, cod: %d, tipo %d\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, tabela_simbolos[i].tipo);
 		free(tabela_simbolos[i].nome);
 	}
 
-	printf("\n\n\nTABELA DE TOKENS\n");
+	cria_arquivo_tabela_tokens(tabela_tokens, ntokens);
+
 	for(i = 0; i < ntokens; i++) {
-		printf("str %s, cod: %d, tipo %d, id %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tabela_tokens[i].tipo, tabela_tokens[i].id);
 		free(tabela_tokens[i].str);
 	}
 
@@ -504,6 +516,13 @@ int main(int argc, char **argv)
 	}
 	
 	free(expressoes);
+
+	if (teveErros) {
+		printf("\nAnálise léxica finalizada, porém os erros acima ocorreram!\n");
+	} else {
+		printf("\nAnálise léxica finalizada com sucesso!\n");
+	}
+	printf("Os arquivos \"tabela_tokens.txt\" e \"tabela_simbolos.txt\" foram criados na pasta de trabalho atual.\n");
 
 	return 0;
 }
