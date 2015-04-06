@@ -84,11 +84,11 @@ int main(int argc, char **argv)
 	char c = proximoCaractere(buffer),cAnt = '\0';
 
 	int prioridadeant = MAX;
-	int maquina = -1,asp = 0,linha = 1,coluna = 0;
+	int maquina = -1,asp = 0,linha = 1,coluna = 0, colunaAnterior = -1;
 
 	while(c != EOF) {
 		
-		// printf("'%s' %c %d\n",buff,c,cont );
+		
 		if (c == '\"')
 		{
 			asp++;
@@ -96,6 +96,7 @@ int main(int argc, char **argv)
 
 		if (c == '\n') {
 			linha++;
+			colunaAnterior = coluna;
 			coluna = 0;
 		}
 		else if (c != '\n')
@@ -106,7 +107,7 @@ int main(int argc, char **argv)
 		// tratamento de erro léxico
 		if (asp == 1 && c == '\n' )
 		{
-			panico(1,linha,buff);
+			panico(1,linha,coluna,buff);
 		}
 
 		if (c != '\n' && (c == ' ' && asp >= 1) && c != '\t' && cAnt != EOF && cont >= 0) {
@@ -117,6 +118,8 @@ int main(int argc, char **argv)
 		 	
 		 	buff[cont] = c;
 		}
+
+		// printf("-------------------------\n'%s' %c %d\n",buff,c,cont );
 
 		if ( ( buff[0] != ' ' || buff[0] == '\n' || buff[0] != '\t')  && cont >= 0)
 		{
@@ -144,7 +147,7 @@ int main(int argc, char **argv)
 				if (ismatch(&d->l))
 				{
 					// printf("\nreconheceu '%s' token %d %d %d\n",buff, k, prioridadeant,expressoes[k].prioridade);
-					if (expressoes[k].prioridade <  prioridadeant)
+					if (expressoes[k].prioridade <=  prioridadeant)
 					{
 						prioridadeant = expressoes[k].prioridade;
 
@@ -158,10 +161,16 @@ int main(int argc, char **argv)
 			}
 		}
 
+		// printf("cont %d reconheceu %d, prioANterior %d maq %d asp %d bfc %c\n", cont, reconheceu, prioridadeant, maquina, asp, buff[cont]);
+
 		if ( cont >= 1 && (c == ' ' || c == '\n' || c == '\t') && ( buff[0] != ' ' || buff[0] == '\n' || buff[0] != '\t')  && ( asp == 0 || asp == 2 ) )
 		{
-			if (maquina == -1) {
-				panico(2, linha, buff);
+			if (maquina == -1 && strlen(buff) > 0) {
+				if (c == '\n') {
+					panico(2, linha - 1, colunaAnterior - cont, buff);
+				} else {
+					panico(2, linha, coluna - cont - 1,buff);
+				}
 
 				for (it = 0; it <= MAX; it++)
 				{
@@ -175,12 +184,12 @@ int main(int argc, char **argv)
 
 				c = proximoCaractere(buffer);
 				
+				if (c == '\n' || c == ' ' || c == '\t' || c == EOF)
+				{
+					// printf("cont %d\n",cont);
+					cont--;
+				}
 				continue;
-				// if (c == '\n' || c == ' ' || c == '\t' || c == EOF)
-				// {
-				// 	// printf("cont %d\n",cont);
-				// 	cont--;
-				// }
 			}
 
 			// printf("\ncaso 1 buff '%s' maq %d rec %d prio %d %d\n",buff,maquina,reconheceu,prioridadeant,asp);
@@ -204,6 +213,8 @@ int main(int argc, char **argv)
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
 						tabela_simbolos[nSimbolos].categoria = 1;
 
+						// printf("anterior %s, %s\n", tabela_tokens[ntokens-1].str, buff);
+
 						if ( strcmp(tabela_tokens[ntokens-1].str,"string") == 0  )
 						{
 							tabela_simbolos[nSimbolos].tipo = 1;
@@ -219,7 +230,7 @@ int main(int argc, char **argv)
 						else
 						{
 							tabela_simbolos[nSimbolos].tipo = -1;
-							panico(3,linha,buff);
+							panico(3,linha,coluna - cont,buff);
 						}
 
 						id = nSimbolos;
@@ -261,9 +272,13 @@ int main(int argc, char **argv)
 				cont--;
 			}
 		}
-		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont] != ',' && maquina != 1) && ( asp == 0 || asp == 2) )
+		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( asp == 0 || asp == 2) )
 		{
 			// printf("\ncaso 2 buff '%s' maq %d rec %d prio %d %d %c %d\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont],asp);
+
+			if (maquina == 32 && buff[cont - 1] == ',') {
+				buff[cont-1] = '\0';
+			}
 
 			if (strlen(buff)) {
 				int id = -1;
@@ -283,6 +298,8 @@ int main(int argc, char **argv)
 						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
 						tabela_simbolos[nSimbolos].categoria = 1;
 
+						// printf("anterior %s, %s\n", tabela_tokens[ntokens-1].str, buff);
+
 						if ( strcmp(tabela_tokens[ntokens-1].str,"string") == 0  )
 						{
 							tabela_simbolos[nSimbolos].tipo = 1;
@@ -298,7 +315,94 @@ int main(int argc, char **argv)
 						else
 						{
 							tabela_simbolos[nSimbolos].tipo = -1;
-							panico(3,linha,buff);
+							panico(3,linha,coluna - cont,buff);
+						}
+
+						id = nSimbolos;
+						indiceSimbolo = nSimbolos;
+						nSimbolos++;
+
+					} else {
+						id = indiceSimbolo;
+					}
+				}
+
+				tabela_tokens[ntokens].str = (char*) malloc(sizeof(char) * (strlen(buff) + 2));
+
+				if (tabela_tokens[ntokens].str == NULL)
+				{
+					exit(1);
+				}
+				strncpy(tabela_tokens[ntokens].str, buff, cont);
+				tabela_tokens[ntokens].str[cont] = '\0';
+				tabela_tokens[ntokens].tipo = expressoes[maquina].tipo;
+				tabela_tokens[ntokens].id = id;
+				tabela_tokens[ntokens].cod = ntokens + 1;
+				tabela_tokens[ntokens].linha = linha;
+				// tabela_tokens[ntokens].coluna
+				
+				ntokens++;
+			}
+			
+			c = buff[cont];
+			
+			for (it = 0; it <= MAX; it++)
+			{
+				buff[it] = '\0';
+			}
+
+			cont = 0;
+
+			prioridadeant = MAX;
+			maquina = -1;
+			asp = 0;
+		}
+		else if ( cont >= 1 && (reconheceu == N && prioridadeant != MAX) && ( buff[cont - 1] == ',' && maquina == 32) && ( asp == 0 || asp == 2) )
+		{
+			// printf("\ncaso 3 buff '%s' maq %d rec %d prio %d %d %c %d\n",buff,maquina,reconheceu,prioridadeant,cont,buff[cont],asp);
+			
+
+
+			if (maquina == 32 && buff[cont - 1] == ',') {
+				buff[cont-1] = '\0';
+			}
+
+			if (strlen(buff)) {
+				int id = -1;
+				// vai pra tabela de simbolo
+				if (expressoes[maquina].tsimbolo == 1) {
+					int indiceSimbolo = encontraSimbolo(tabela_simbolos, buff);
+					if (indiceSimbolo == -1) {
+						tabela_simbolos[nSimbolos].nome = (char *)malloc(sizeof(char) * (strlen(buff)+2));
+
+						if (tabela_simbolos[nSimbolos].nome == NULL)
+						{
+							exit(1);
+						}
+
+						strncpy(tabela_simbolos[nSimbolos].nome, buff, cont);
+						tabela_simbolos[nSimbolos].nome[cont] = '\0';
+						tabela_simbolos[nSimbolos].cod = nSimbolos + 1;
+						tabela_simbolos[nSimbolos].categoria = 1;
+
+						// printf("anterior %s, %s\n", tabela_tokens[ntokens-1].str, buff);
+
+						if ( strcmp(tabela_tokens[ntokens-1].str,"string") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 1;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"int") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 2;
+						}
+						else if ( strcmp(tabela_tokens[ntokens-1].str,"float") == 0  )
+						{
+							tabela_simbolos[nSimbolos].tipo = 3;
+						}
+						else
+						{
+							tabela_simbolos[nSimbolos].tipo = -1;
+							panico(3,linha,coluna - cont,buff);
 						}
 
 						id = nSimbolos;

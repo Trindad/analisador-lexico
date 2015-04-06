@@ -2,22 +2,30 @@
 :: comentario
 :: mais comentario
 main begin
-	int x = 1
-	float y = 2,5
-	string nome = "Bruce Lee" ::vsxggxsv
-	$$$$$vdacsgcxcvf
-	float yup&$ = 1
-	if x < 3 begin
-		print " " nome
-		scan x
-		x = 2,@
-	end
+  int x = 1
+  float y = 2,5
+  string nome = "Bruce Lee" ::vsxggxsv
+  $$$$$vdacsgcxcvf
+  float yup&$ = 1
+  if x < 3 begin
+    print " " nome
+    scan x
+    x = 2,@
+    x = (2,5+10)*10
+  end
 
-	while x > 10 begin
+  if !x begin
 
-	end
+  end
 
-	for i in 1 to x begin
+  int __uid = 0
+  int dusi_dusi_dios = 99
 
-	end
+  while (x > 10 and x <= 20) or (x > 50) begin
+
+  end
+
+  for i in 1 to x begin
+
+  end
 end

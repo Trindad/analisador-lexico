@@ -229,9 +229,21 @@ Expressao *criaExpressoes()
 
 	exp[32].expressao = "(0|1|2|3|4|5|6|7|8|9)+(,(0|1|2|3|4|5|6|7|8|9)*)";
 	exp[32].tsimbolo = 0;
-	exp[32].tipo = 4;
-	exp[32].prioridade = 1;
+	exp[32].tipo = 3;
+	exp[32].prioridade = 3;
 	exp[32].id = 33;
+
+	exp[33].expressao = "\\)";
+	exp[33].tsimbolo = 0;
+	exp[33].tipo = 2;
+	exp[33].prioridade = 2;
+	exp[33].id = 34;
+
+	exp[34].expressao = "\\(";
+	exp[34].tsimbolo = 0;
+	exp[34].tipo = 2;
+	exp[34].prioridade = 2;
+	exp[34].id = 35;
 
 	return exp;
 }
@@ -414,18 +426,18 @@ int encontraToken(Token *tabela, char *token)
 //erro = 1 para string ok
 //erro = 2 simbolos não pertencentes ao conjunto ok 
 //erro = 3 variavel utilizada mas não declarada
-void panico(int erro,int linha,char *str)
+void panico(int erro,int linha, int coluna, char *str)
 {
 	switch(erro)
 	{
 		case 1:
-			fprintf(stderr, "String \"%s\" não terminada na linha %d\n", str, linha);
+			fprintf(stderr, "String \"%s\" não terminada na linha %d, coluna %d\n", str, linha, coluna);
 			break;
 		case 2:
-			fprintf(stderr, "Token \"%s\" não esperado na linha %d\n", str, linha);
+			fprintf(stderr, "Token \"%s\" não esperado na linha %d, coluna %d\n", str, linha, coluna);
 			break;
 		case 3:
-			fprintf(stderr, "Variável \"%s\" não declarada e usada pela primeira vez na linha %d\n", str, linha);	
+			fprintf(stderr, "Variável \"%s\" não declarada e usada pela primeira vez na linha %d, coluna %d\n", str, linha, coluna);	
 			break;
 		default:
 			break;

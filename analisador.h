@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define N 33 //armazena o número de expressões
+#define N 35 //armazena o número de expressões
 #define BUFFER_SIZE 8
 #define MAX 8000
 
