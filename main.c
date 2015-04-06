@@ -3,6 +3,13 @@
 
 int main(int argc, char **argv)
 {
+	if (argc < 2) {
+		printf("Arquivo de entrada não especificado.\n");
+		printf("Padrão para executar:\n");
+		printf("\t ./main <caminho_do_arquivo>.jusm\n\n");
+		exit(1);
+	}
+
 	int i;
 	char *post;
 	State *start;
@@ -25,7 +32,7 @@ int main(int argc, char **argv)
 		tabela_tokens[i].str = NULL;
 	}
 
-	FILE *arquivo = abreArquivoFonte("example.jusm");
+	FILE *arquivo = abreArquivoFonte(argv[1]);
 	Buffer *buffer = criaBuffer(arquivo);
 
 	for (i = 0; i < N; i++) {
