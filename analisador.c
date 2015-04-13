@@ -455,7 +455,7 @@ void cria_arquivo_tabela_simbolos(Simbolo *tabela_simbolos, int nSimbolos)
 	int i;
 	for(i = 0; i < nSimbolos; i++) {
 		const char *categoria = tabela_simbolos[i].categoria == 1 ? "variável" : "indefinido";
-		const char *tipo = tabela_simbolos[i].tipo == 1 ? "string" : (tabela_simbolos[i].tipo == 2 ? "int" : "float");
+		const char *tipo = tabela_simbolos[i].tipo == 1 ? "string" : (tabela_simbolos[i].tipo == 2 ? "int" : (tabela_simbolos[i].tipo == 3 ? "float" : "indefinido"));
 		fprintf(file, "simbolo: %s, codigo: %d, categoria: %s, tipo: %s\n", tabela_simbolos[i].nome, tabela_simbolos[i].cod, categoria, tipo);
 	}
 }
@@ -469,7 +469,7 @@ void cria_arquivo_tabela_tokens(Token *tabela_tokens, int ntokens)
 	int i;
 	for(i = 0; i < ntokens; i++) {
 		const char *tipo = tabela_tokens[i].tipo == 1 ? "identificador" : (tabela_tokens[i].tipo == 2 ? "operador" : (tabela_tokens[i].tipo == 3 ? "constante" : "palavra reservada"));
-		fprintf(file, "token: %s, codigo: %d, tipo: %s, linha: %d, coluna: %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, tipo, tabela_tokens[i].linha, tabela_tokens[i].coluna);
+		fprintf(file, "token: %s, codigo: %d, ref. tabela simbolo: %d, tipo: %s, linha: %d, coluna: %d\n", tabela_tokens[i].str, tabela_tokens[i].cod, (tabela_tokens[i].id > -1 ? tabela_tokens[i].id+1 : -1) , tipo, tabela_tokens[i].linha, tabela_tokens[i].coluna);
 	}
 }
 

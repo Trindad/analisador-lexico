@@ -1,4 +1,3 @@
-#include "thompson.h"
 #include "analisador.h"
 
 int main(int argc, char **argv)
@@ -31,7 +30,7 @@ int main(int argc, char **argv)
 	if ( strcmp(extensao,".jusm") )
 	{
 		fprintf(stderr, "extensão do arquivo '%s' esta errada \n",argv[1] );
-	
+
 		exit(1);
 	}
 

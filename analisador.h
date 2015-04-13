@@ -50,10 +50,14 @@ typedef struct _ts
 }Simbolo;
 
 FILE *abreArquivoFonte(char *filename);
+
 Buffer *criaBuffer(FILE *arquivo);
+
 Expressao *criaExpressoes();
 
-// enche buffer secundário
+/**
+ * enche buffer secundário
+ */
 void encheBuffer(Buffer *buffer);
 
 /**
@@ -61,12 +65,34 @@ void encheBuffer(Buffer *buffer);
  */
 char proximoCaractere(Buffer *buffer);
 
+/**
+ * Verifica se um simbolo já esta na tabela de simbolos
+ */
 int encontraSimbolo(Simbolo *tabela, char *nome);
 
+/**
+ * Verifica se um token já esta na tabela de tokens
+ */
 int encontraToken(Token *tabela, char *token);
 
+/**
+ * Cria arquivo e joga dados no arquivo
+ */
 void cria_arquivo_tabela_simbolos(Simbolo *tabela_simbolos, int nSimbolos);
 
+/**
+ * Cria arquivo e joga dados no arquivo 
+ */
 void cria_arquivo_tabela_tokens(Token *tabela_tokens, int ntokens);
 
+/**
+ * Abre arquivo
+ * Inicializa estrutura de buffer
+ * Gera máquinas de estado
+ * Intercala buffers
+ * Verifica lexema válido
+ * Se não for volta para o estado anterior onde era válido
+ * Insere na tabela de tokens e simbolos
+ * Verifica erros, caso ocorra entra em modo panico
+ */
 int executa(char *nome);
