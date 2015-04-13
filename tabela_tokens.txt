@@ -1,0 +1,109 @@
+TABELA DE TOKENS
+==================
+
+token: main, codigo: 1, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 4, coluna: 1
+token: begin, codigo: 2, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 4, coluna: 6
+token: int, codigo: 3, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 5, coluna: 3
+token: x, codigo: 4, ref. tabela simbolo: 1, tipo: identificador, linha: 5, coluna: 7
+token: =, codigo: 5, ref. tabela simbolo: -1, tipo: operador, linha: 5, coluna: 9
+token: 1, codigo: 6, ref. tabela simbolo: -1, tipo: constante, linha: 5, coluna: 11
+token: float, codigo: 7, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 6, coluna: 3
+token: y, codigo: 8, ref. tabela simbolo: 2, tipo: identificador, linha: 6, coluna: 9
+token: =, codigo: 9, ref. tabela simbolo: -1, tipo: operador, linha: 6, coluna: 11
+token: 2,5, codigo: 10, ref. tabela simbolo: -1, tipo: constante, linha: 6, coluna: 13
+token: string, codigo: 11, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 7, coluna: 3
+token: nome, codigo: 12, ref. tabela simbolo: 3, tipo: identificador, linha: 7, coluna: 10
+token: =, codigo: 13, ref. tabela simbolo: -1, tipo: operador, linha: 7, coluna: 15
+token: "Bruce Lee", codigo: 14, ref. tabela simbolo: -1, tipo: constante, linha: 7, coluna: 17
+token: float, codigo: 15, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 9, coluna: 3
+token: yup, codigo: 16, ref. tabela simbolo: 4, tipo: identificador, linha: 9, coluna: 9
+token: =, codigo: 17, ref. tabela simbolo: -1, tipo: operador, linha: 9, coluna: 16
+token: 1, codigo: 18, ref. tabela simbolo: -1, tipo: constante, linha: 9, coluna: 18
+token: if, codigo: 19, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 10, coluna: 3
+token: x, codigo: 20, ref. tabela simbolo: 1, tipo: identificador, linha: 10, coluna: 6
+token: <, codigo: 21, ref. tabela simbolo: -1, tipo: operador, linha: 10, coluna: 8
+token: 3, codigo: 22, ref. tabela simbolo: -1, tipo: constante, linha: 10, coluna: 10
+token: begin, codigo: 23, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 10, coluna: 12
+token: print, codigo: 24, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 11, coluna: 5
+token: " ", codigo: 25, ref. tabela simbolo: -1, tipo: constante, linha: 11, coluna: 11
+token: nome, codigo: 26, ref. tabela simbolo: 3, tipo: identificador, linha: 11, coluna: 15
+token: scan, codigo: 27, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 12, coluna: 5
+token: x, codigo: 28, ref. tabela simbolo: 1, tipo: identificador, linha: 12, coluna: 10
+token: x, codigo: 29, ref. tabela simbolo: 1, tipo: identificador, linha: 13, coluna: 5
+token: =, codigo: 30, ref. tabela simbolo: -1, tipo: operador, linha: 13, coluna: 7
+token: 2, codigo: 31, ref. tabela simbolo: -1, tipo: constante, linha: 13, coluna: 9
+token: x, codigo: 32, ref. tabela simbolo: 1, tipo: identificador, linha: 14, coluna: 5
+token: =, codigo: 33, ref. tabela simbolo: -1, tipo: operador, linha: 14, coluna: 7
+token: (, codigo: 34, ref. tabela simbolo: -1, tipo: operador, linha: 14, coluna: 9
+token: 2,5, codigo: 35, ref. tabela simbolo: -1, tipo: constante, linha: 14, coluna: 11
+token: +, codigo: 36, ref. tabela simbolo: -1, tipo: operador, linha: 14, coluna: 15
+token: 10, codigo: 37, ref. tabela simbolo: -1, tipo: constante, linha: 14, coluna: 17
+token: ), codigo: 38, ref. tabela simbolo: -1, tipo: operador, linha: 14, coluna: 20
+token: *, codigo: 39, ref. tabela simbolo: -1, tipo: operador, linha: 14, coluna: 22
+token: 10, codigo: 40, ref. tabela simbolo: -1, tipo: constante, linha: 14, coluna: 24
+token: end, codigo: 41, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 15, coluna: 3
+token: if, codigo: 42, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 17, coluna: 3
+token: !, codigo: 43, ref. tabela simbolo: -1, tipo: operador, linha: 17, coluna: 6
+token: x, codigo: 44, ref. tabela simbolo: 1, tipo: identificador, linha: 17, coluna: 8
+token: begin, codigo: 45, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 17, coluna: 10
+token: end, codigo: 46, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 19, coluna: 3
+token: int, codigo: 47, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 21, coluna: 3
+token: __uid, codigo: 48, ref. tabela simbolo: 5, tipo: identificador, linha: 21, coluna: 7
+token: =, codigo: 49, ref. tabela simbolo: -1, tipo: operador, linha: 21, coluna: 13
+token: 0, codigo: 50, ref. tabela simbolo: -1, tipo: constante, linha: 21, coluna: 15
+token: int, codigo: 51, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 22, coluna: 3
+token: dusi_dusi_dios, codigo: 52, ref. tabela simbolo: 6, tipo: identificador, linha: 22, coluna: 7
+token: =, codigo: 53, ref. tabela simbolo: -1, tipo: operador, linha: 22, coluna: 22
+token: 99, codigo: 54, ref. tabela simbolo: -1, tipo: constante, linha: 22, coluna: 24
+token: int, codigo: 55, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 24, coluna: 3
+token: nosei, codigo: 56, ref. tabela simbolo: 7, tipo: identificador, linha: 24, coluna: 7
+token: =, codigo: 57, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 13
+token: !, codigo: 58, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 15
+token: (, codigo: 59, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 17
+token: (, codigo: 60, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 19
+token: (, codigo: 61, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 21
+token: (, codigo: 62, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 23
+token: 10, codigo: 63, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 25
+token: /, codigo: 64, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 28
+token: 5, codigo: 65, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 30
+token: ), codigo: 66, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 32
+token: +, codigo: 67, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 34
+token: 455, codigo: 68, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 36
+token: -, codigo: 69, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 40
+token: 678678, codigo: 70, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 42
+token: *, codigo: 71, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 49
+token: 2, codigo: 72, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 51
+token: ), codigo: 73, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 53
+token: %, codigo: 74, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 55
+token: 2, codigo: 75, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 57
+token: ), codigo: 76, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 59
+token: ==, codigo: 77, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 61
+token: 0, codigo: 78, ref. tabela simbolo: -1, tipo: constante, linha: 24, coluna: 64
+token: ), codigo: 79, ref. tabela simbolo: -1, tipo: operador, linha: 24, coluna: 66
+token: while, codigo: 80, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 26, coluna: 3
+token: (, codigo: 81, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 9
+token: x, codigo: 82, ref. tabela simbolo: 1, tipo: identificador, linha: 26, coluna: 11
+token: >, codigo: 83, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 13
+token: 10, codigo: 84, ref. tabela simbolo: -1, tipo: constante, linha: 26, coluna: 15
+token: and, codigo: 85, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 18
+token: x, codigo: 86, ref. tabela simbolo: 1, tipo: identificador, linha: 26, coluna: 22
+token: <=, codigo: 87, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 24
+token: 20, codigo: 88, ref. tabela simbolo: -1, tipo: constante, linha: 26, coluna: 27
+token: ), codigo: 89, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 30
+token: or, codigo: 90, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 32
+token: (, codigo: 91, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 35
+token: x, codigo: 92, ref. tabela simbolo: 1, tipo: identificador, linha: 26, coluna: 37
+token: >, codigo: 93, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 39
+token: 50, codigo: 94, ref. tabela simbolo: -1, tipo: constante, linha: 26, coluna: 41
+token: ), codigo: 95, ref. tabela simbolo: -1, tipo: operador, linha: 26, coluna: 44
+token: begin, codigo: 96, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 26, coluna: 46
+token: end, codigo: 97, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 28, coluna: 3
+token: for, codigo: 98, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 30, coluna: 3
+token: i, codigo: 99, ref. tabela simbolo: 8, tipo: identificador, linha: 30, coluna: 7
+token: in, codigo: 100, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 30, coluna: 9
+token: 1, codigo: 101, ref. tabela simbolo: -1, tipo: constante, linha: 30, coluna: 12
+token: to, codigo: 102, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 30, coluna: 14
+token: x, codigo: 103, ref. tabela simbolo: 1, tipo: identificador, linha: 30, coluna: 17
+token: begin, codigo: 104, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 30, coluna: 19
+token: end, codigo: 105, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 32, coluna: 3
+token: end, codigo: 106, ref. tabela simbolo: -1, tipo: palavra reservada, linha: 33, coluna: 2

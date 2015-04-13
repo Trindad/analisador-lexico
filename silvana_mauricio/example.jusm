@@ -1,0 +1,33 @@
+######3nn
+:: comentario
+:: mais comentario
+main begin
+  int x = 1
+  float y = 2,5
+  string nome = "Bruce Lee" ::vsxggxsv
+  $$$$$vdacsgcxcvf
+  float yup&$ = 1
+  if x < 3 begin
+    print " " nome
+    scan x
+    x = 2,@
+    x = (2,5+10)*10
+  end
+
+  if !x begin
+
+  end
+
+  int __uid = 0
+  int dusi_dusi_dios = 99
+
+  int nosei = !((((10 / 5) + 455 - 678678 * 2)%2) == 0)
+
+  while (x > 10 and x <= 20) or (x > 50) begin
+
+  end
+
+  for i in 1 to x begin
+
+  end
+end

@@ -1,0 +1,11 @@
+TABELA DE SIMBOLOS
+==================
+
+simbolo: x, codigo: 1, categoria: variável, tipo: int
+simbolo: y, codigo: 2, categoria: variável, tipo: float
+simbolo: nome, codigo: 3, categoria: variável, tipo: string
+simbolo: yup, codigo: 4, categoria: variável, tipo: float
+simbolo: __uid, codigo: 5, categoria: variável, tipo: int
+simbolo: dusi_dusi_dios, codigo: 6, categoria: variável, tipo: int
+simbolo: nosei, codigo: 7, categoria: variável, tipo: int
+simbolo: i, codigo: 8, categoria: variável, tipo: indefinido

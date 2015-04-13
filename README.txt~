@@ -1,0 +1,6 @@
+Analisador Léxico
+
+Compilar
+	 gcc *.c  -o main -lm -g
+Executar 
+	./main example.jusm
